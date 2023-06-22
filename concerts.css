@@ -61,22 +61,24 @@
   position: relative;
   align-items: center;
   flex-direction: column;
-  background-size: cover;
   justify-content: flex-start;
-  background-image: url("https://images.unsplash.com/photo-1671725779253-aa2351eb9271?ixid=Mnw5MTMyMXwxfDF8YWxsfDF8fHx8fHwyfHwxNjcyODM1NTMz&ixlib=rb-4.0.3&w=1500");
 }
 .header-header {
-  width: 100%;
   display: flex;
-  max-width: var(--dl-size-size-maxwidth);
+  max-width: auto;
+  align-self: stretch;
+  align-items: stretch;
   padding-top: var(--dl-space-space-twounits);
   padding-left: var(--dl-space-space-threeunits);
   padding-right: var(--dl-space-space-threeunits);
+  flex-direction: row;
   padding-bottom: var(--dl-space-space-twounits);
+  background-size: auto;
   justify-content: space-between;
+  background-image: url("public/header-800h.png");
 }
 .header-image {
-  height: var(--dl-size-size-medium);
+  width: 200px;
   object-fit: cover;
 }
 .header-nav {
@@ -146,7 +148,7 @@
   left: 0px;
   height: auto;
   position: static;
-  align-self: flex-start;
+  align-self: stretch;
 }
 @media(max-width: 991px) {
   .header-icon {
@@ -231,25 +233,36 @@
   justify-content: center;
 }
 .footer-container1 {
+  gap: var(--dl-space-space-twounits);
   flex: 0 0 auto;
   width: 100%;
   height: 100%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  padding-top: var(--dl-space-space-halfunit);
   padding-left: var(--dl-space-space-sixunits);
   padding-right: var(--dl-space-space-sixunits);
-  justify-content: space-between;
+  padding-bottom: var(--dl-space-space-halfunit);
+  justify-content: center;
+}
+.footer-link {
+  display: contents;
 }
 .footer-facebook {
   width: auto;
   height: 100%;
+  text-decoration: none;
+}
+.footer-link1 {
+  display: contents;
 }
 .footer-instagram {
   width: auto;
   height: 100%;
+  text-decoration: none;
 }
-.footer-link {
+.footer-link2 {
   display: contents;
 }
 .footer-youtube {
@@ -257,16 +270,20 @@
   height: 100%;
   text-decoration: none;
 }
+.footer-link3 {
+  display: contents;
+}
 .footer-mail {
   width: auto;
   height: 100%;
+  text-decoration: none;
 }
 .footer-root-class-name1 {
   left: 0px;
   bottom: 0px;
   height: var(--dl-size-size-medium);
   position: static;
-  align-self: center;
+  align-self: flex-end;
 }
 @media(max-width: 767px) {
   .footer-container1 {
@@ -292,16 +309,22 @@
   height: 100%;
   display: flex;
   position: relative;
-  align-items: stretch;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
 }
 .page-template-container1 {
-  width: 100%;
+  flex: 0 0 auto;
+  display: flex;
+  align-self: stretch;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.page-template-container2 {
   height: 100%;
   display: flex;
   align-self: center;
   align-items: flex-start;
+  flex-direction: column;
   justify-content: center;
 }
 .page-template-custom-slot {
@@ -325,12 +348,22 @@
   grid-template-columns: 1fr 1fr;
 }
 .page-template-root-class-name {
+  flex: 1;
   height: 100%;
+  align-self: stretch;
 }
-
-
-
-
+.page-template-root-class-name1 {
+  flex: 1;
+}
+.page-template-root-class-name2 {
+  flex: 1;
+}
+.page-template-root-class-name3 {
+  flex: 1;
+}
+.page-template-root-class-name4 {
+  flex: 1;
+}
 @media(max-width: 767px) {
   .page-template-features {
     padding-left: var(--dl-space-space-twounits);
