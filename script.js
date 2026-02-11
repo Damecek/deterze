@@ -1,33 +1,33 @@
 const members = [
   {
-    name: "[Jméno člena 1]",
-    role: "Vokál",
-    note: "Krátký medailonek člena, zkušenosti, vlivy nebo zajímavost."
+    name: "Zita",
+    role: "Zpěvačka",
+    note: "[PLACEHOLDER_MEDAILONEK_ZITA]"
   },
   {
-    name: "[Jméno člena 2]",
-    role: "Kytara",
-    note: "Placeholder text – doplňte vlastní informace."
+    name: "Jenda",
+    role: "Kytarista",
+    note: "[PLACEHOLDER_MEDAILONEK_JENDA]"
   },
   {
-    name: "[Jméno člena 3]",
+    name: "Onďa",
     role: "Basa",
-    note: "Placeholder text – doplňte vlastní informace."
+    note: "[PLACEHOLDER_MEDAILONEK_ONDA]"
   },
   {
-    name: "[Jméno člena 4]",
+    name: "Peťa",
     role: "Bicí",
-    note: "Placeholder text – doplňte vlastní informace."
+    note: "[PLACEHOLDER_MEDAILONEK_PETA]"
   }
 ];
 
 const gallery = [
-  "[Koncert 01 • město • rok]",
-  "[Backstage • festival • rok]",
-  "[Promo foto • fotograf • rok]",
-  "[Live set • klub • rok]",
-  "[Fanoušci • show • rok]",
-  "[Studio session • rok]"
+  "[PLACEHOLDER_TOP_FOTO_01 • název akce • místo • rok]",
+  "[PLACEHOLDER_TOP_FOTO_02 • název akce • místo • rok]",
+  "[PLACEHOLDER_TOP_FOTO_03 • promo foto • fotograf • rok]",
+  "[PLACEHOLDER_TOP_FOTO_04 • live • klub/festival • rok]",
+  "[PLACEHOLDER_TOP_FOTO_05 • kapela + fanoušci • místo • rok]",
+  "[PLACEHOLDER_TOP_FOTO_06 • backstage/studio • rok]"
 ];
 
 function renderMembers() {
