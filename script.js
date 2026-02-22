@@ -10,14 +10,14 @@ const members = [
     note: "[PLACEHOLDER_MEDAILONEK_JENDA]"
   },
   {
-    name: "Onďa",
-    role: "Basa",
-    note: "[PLACEHOLDER_MEDAILONEK_ONDA]"
-  },
-  {
     name: "Peťa",
     role: "Bicí",
     note: "[PLACEHOLDER_MEDAILONEK_PETA]"
+  },
+  {
+    name: "Ondra",
+    role: "Basa",
+    note: "[PLACEHOLDER_MEDAILONEK_ONDA]"
   }
 ];
 
