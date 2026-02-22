@@ -60,6 +60,17 @@ const allowedGalleryExtensions = [
   ".gif",
   ".avif",
 ];
+let galleryLightbox;
+let galleryLightboxImage;
+
+function escapeHtml(value) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
 
 function renderMembers() {
   const target = document.getElementById("members-grid");
@@ -100,14 +111,6 @@ function isGalleryImage(fileName) {
   );
 }
 
-function fileNameToCaption(fileName) {
-  return fileName
-    .replace(/\.[^.]+$/, "")
-    .replace(/[-_]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
 async function loadGalleryFromDirectory() {
   if (window.location.protocol === "file:") {
     return { items: [], reason: "file-protocol" };
@@ -129,10 +132,8 @@ async function loadGalleryFromDirectory() {
       const normalizedHref = href.startsWith("http")
         ? href
         : `${galleryDirectory}${href.replace(/^\.\//, "")}`;
-      const fileName = decodeURIComponent(href.split("/").pop());
       return {
         src: normalizedHref,
-        caption: fileNameToCaption(fileName),
       };
     });
 
@@ -140,7 +141,7 @@ async function loadGalleryFromDirectory() {
     new Map(galleryItems.map((item) => [item.src, item])).values(),
   );
   return {
-    items: uniqueBySrc.sort((a, b) => a.caption.localeCompare(b.caption, "cs")),
+    items: uniqueBySrc.sort((a, b) => a.src.localeCompare(b.src, "cs")),
     reason: "ok",
   };
 }
@@ -173,7 +174,14 @@ async function renderGallery() {
       .map(
         (item) => `
           <figure class="gallery-item">
-            <img src="${item.src}" alt="${item.caption}" loading="lazy" />
+            <button
+              class="gallery-trigger"
+              type="button"
+              data-src="${escapeHtml(item.src)}"
+              aria-label="Otevřít fotku v plné velikosti"
+            >
+              <img src="${escapeHtml(item.src)}" alt="Fotka kapely Deterze" loading="lazy" />
+            </button>
           </figure>
         `,
       )
@@ -185,6 +193,67 @@ async function renderGallery() {
       </figure>
     `;
   }
+}
+
+function openGalleryLightbox(src) {
+  galleryLightboxImage.src = src;
+  galleryLightboxImage.alt = "Fotka kapely Deterze";
+  galleryLightbox.classList.add("open");
+  galleryLightbox.setAttribute("aria-hidden", "false");
+  document.body.classList.add("no-scroll");
+}
+
+function closeGalleryLightbox() {
+  if (!galleryLightbox.classList.contains("open")) {
+    return;
+  }
+
+  galleryLightbox.classList.remove("open");
+  galleryLightbox.setAttribute("aria-hidden", "true");
+  galleryLightboxImage.src = "";
+  galleryLightboxImage.alt = "";
+  document.body.classList.remove("no-scroll");
+}
+
+function setupGalleryLightbox() {
+  const galleryGrid = document.getElementById("gallery-grid");
+
+  galleryLightbox = document.createElement("div");
+  galleryLightbox.className = "gallery-lightbox";
+  galleryLightbox.setAttribute("aria-hidden", "true");
+  galleryLightbox.innerHTML = `
+    <div class="gallery-lightbox-backdrop" data-lightbox-close></div>
+    <figure class="gallery-lightbox-content" role="dialog" aria-modal="true" aria-label="Zvětšená fotka z galerie">
+      <button class="gallery-lightbox-close" type="button" aria-label="Zavřít fotku">×</button>
+      <img src="" alt="" />
+    </figure>
+  `;
+  document.body.append(galleryLightbox);
+
+  galleryLightboxImage = galleryLightbox.querySelector("img");
+
+  galleryGrid.addEventListener("click", (event) => {
+    const trigger = event.target.closest(".gallery-trigger");
+    if (!trigger) {
+      return;
+    }
+    openGalleryLightbox(trigger.dataset.src);
+  });
+
+  galleryLightbox.addEventListener("click", (event) => {
+    if (
+      event.target.matches("[data-lightbox-close]") ||
+      event.target.closest(".gallery-lightbox-close")
+    ) {
+      closeGalleryLightbox();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeGalleryLightbox();
+    }
+  });
 }
 
 function setupMenu() {
@@ -208,6 +277,7 @@ function setupMenu() {
 async function init() {
   renderMembers();
   renderSongs();
+  setupGalleryLightbox();
   await renderGallery();
   setupMenu();
   document.getElementById("year").textContent = new Date().getFullYear();
