@@ -26,7 +26,7 @@ Uprav pole `members` v `script.js`:
 - popisek.
 
 ### 3) Galerie
-Uprav pole `gallery` v `script.js`.
+Přidej fotky do `public/galery/` a aktualizuj seznam v `public/galery/gallery.json`.
 
 ## Lokální spuštění
 
