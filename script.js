@@ -52,6 +52,7 @@ const songs = [
 ];
 
 const galleryDirectory = "public/galery/";
+const galleryManifestPath = `${galleryDirectory}gallery.json`;
 const allowedGalleryExtensions = [
   ".jpg",
   ".jpeg",
@@ -111,6 +112,51 @@ function isGalleryImage(fileName) {
   );
 }
 
+function normalizeGallerySrc(fileName) {
+  if (fileName.startsWith("http://") || fileName.startsWith("https://")) {
+    return fileName;
+  }
+
+  const trimmedFileName = fileName.replace(/^\.?\//, "");
+  return `${galleryDirectory}${encodeURIComponent(trimmedFileName).replaceAll("%2F", "/")}`;
+}
+
+function dedupeAndSortGallery(items) {
+  const uniqueBySrc = Array.from(
+    new Map(items.map((item) => [item.src, item])).values(),
+  );
+  return uniqueBySrc.sort((a, b) => a.src.localeCompare(b.src, "cs"));
+}
+
+async function loadGalleryFromManifest() {
+  if (window.location.protocol === "file:") {
+    return { items: [], reason: "file-protocol" };
+  }
+
+  const response = await fetch(galleryManifestPath, { cache: "no-store" });
+  if (!response.ok) {
+    return { items: [], reason: "manifest-not-found" };
+  }
+
+  const manifest = await response.json();
+  const namesFromManifest = Array.isArray(manifest)
+    ? manifest
+    : Array.isArray(manifest.images)
+      ? manifest.images
+      : [];
+
+  const galleryItems = namesFromManifest
+    .filter((fileName) => typeof fileName === "string" && isGalleryImage(fileName))
+    .map((fileName) => ({
+      src: normalizeGallerySrc(fileName),
+    }));
+
+  return {
+    items: dedupeAndSortGallery(galleryItems),
+    reason: "ok",
+  };
+}
+
 async function loadGalleryFromDirectory() {
   if (window.location.protocol === "file:") {
     return { items: [], reason: "file-protocol" };
@@ -128,21 +174,30 @@ async function loadGalleryFromDirectory() {
   const galleryItems = Array.from(documentContent.querySelectorAll("a"))
     .map((link) => link.getAttribute("href") || "")
     .filter((href) => href && !href.endsWith("/") && isGalleryImage(href))
-    .map((href) => {
-      const normalizedHref = href.startsWith("http")
-        ? href
-        : `${galleryDirectory}${href.replace(/^\.\//, "")}`;
-      return {
-        src: normalizedHref,
-      };
-    });
+    .map((href) => ({
+      src: normalizeGallerySrc(href),
+    }));
 
-  const uniqueBySrc = Array.from(
-    new Map(galleryItems.map((item) => [item.src, item])).values(),
-  );
   return {
-    items: uniqueBySrc.sort((a, b) => a.src.localeCompare(b.src, "cs")),
+    items: dedupeAndSortGallery(galleryItems),
     reason: "ok",
+  };
+}
+
+async function loadGallery() {
+  const manifestResult = await loadGalleryFromManifest();
+  if (manifestResult.items.length > 0 || manifestResult.reason === "file-protocol") {
+    return manifestResult;
+  }
+
+  const directoryResult = await loadGalleryFromDirectory();
+  if (directoryResult.items.length > 0 || directoryResult.reason === "file-protocol") {
+    return directoryResult;
+  }
+
+  return {
+    items: [],
+    reason: manifestResult.reason === "manifest-not-found" ? "manifest-not-found" : "not-found",
   };
 }
 
@@ -150,7 +205,7 @@ async function renderGallery() {
   const target = document.getElementById("gallery-grid");
 
   try {
-    const { items: gallery, reason } = await loadGalleryFromDirectory();
+    const { items: gallery, reason } = await loadGallery();
 
     if (gallery.length === 0) {
       if (reason === "file-protocol") {
@@ -164,7 +219,7 @@ async function renderGallery() {
 
       target.innerHTML = `
         <figure class="gallery-item">
-          <div class="gallery-empty">Do složky <code>public/galery/</code> přidej fotky (.jpg/.png/.webp) a galerie se načte automaticky.</div>
+          <div class="gallery-empty">Do složky <code>public/galery/</code> přidej fotky a aktualizuj soubor <code>public/galery/gallery.json</code>.</div>
         </figure>
       `;
       return;
