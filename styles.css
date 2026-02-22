@@ -134,7 +134,8 @@ h1 {
 .section p { color: var(--muted); }
 
 .card-grid,
-.gallery-grid {
+.gallery-grid,
+.songs-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1rem;
@@ -142,36 +143,38 @@ h1 {
 }
 
 .card,
-.gallery-item {
+.gallery-item,
+.song-card {
   background: linear-gradient(160deg, #1f1f26 0%, #151518 100%);
   border: 1px solid var(--border);
   border-radius: .6rem;
   overflow: hidden;
 }
 
+.song-card {
+  text-decoration: none;
+  display: grid;
+}
+
+.song-card span {
+  padding: .7rem .9rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.member-photo,
+.gallery-item img,
+.song-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
 .card-content { padding: .9rem; }
 .card p { margin: .4rem 0 0; color: var(--muted); }
 .card .role { color: var(--accent); font-weight: 700; }
 
-.placeholder-image {
-  aspect-ratio: 4 / 3;
-  display: grid;
-  place-items: center;
-  background: repeating-linear-gradient(45deg, #2a2a31, #2a2a31 10px, #232329 10px, #232329 20px);
-  color: #ddd;
-  font-weight: 600;
-}
-
 .gallery-caption { padding: .7rem .9rem; color: var(--muted); }
-
-code {
-  background: #ffffff12;
-  border: 1px solid var(--border);
-  padding: .1rem .35rem;
-  border-radius: .3rem;
-}
-
-.placeholder { color: #e2a5aa; }
 
 .contact-links {
   display: flex;
