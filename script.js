@@ -30,22 +30,22 @@ const members = [
 
 const songs = [
   {
-    title: "Deterze – skladba 1",
+    title: "Deterze - Často si myslím (Official Video)",
     url: "https://www.youtube.com/watch?v=fR25w1PvgRs",
     thumb: "https://i.ytimg.com/vi/fR25w1PvgRs/hqdefault.jpg",
   },
   {
-    title: "Deterze – skladba 2",
+    title: "Deterze - Samota (live in Havlíčkův Brod)",
     url: "https://www.youtube.com/watch?v=p827aJ7uGWI",
     thumb: "https://i.ytimg.com/vi/p827aJ7uGWI/hqdefault.jpg",
   },
   {
-    title: "Deterze – skladba 3",
+    title: "Deterze - Běž (live in Havlíčkův Brod)",
     url: "https://www.youtube.com/watch?v=Inut9Eg--2s",
     thumb: "https://i.ytimg.com/vi/Inut9Eg--2s/hqdefault.jpg",
   },
   {
-    title: "Deterze – skladba 4",
+    title: "Deterze - Stále marný (live in Havlíčkův Brod)",
     url: "https://www.youtube.com/watch?v=1uBWzLrD_lw",
     thumb: "https://i.ytimg.com/vi/1uBWzLrD_lw/hqdefault.jpg",
   },
